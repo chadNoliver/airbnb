@@ -1,0 +1,57 @@
+---
+title: "Airbnb"
+author: "chadnoliver"
+date: "2019.07.29"
+---
+
+This file will be used for exploratory data analysis of New Orleans Airbnb data.
+
+First we will import the data from the airbnb open data api:
+
+```{r, Data import}
+library(RSocrata)
+library(knitr)
+library(magrittr)
+library(dplyr)
+df <- read.socrata(
+  "https://data.nola.gov/resource/en36-xvxg.json"
+)
+str(df)
+View(df)
+
+kable(df %>% 
+        group_by(license_type, current_status) %>% 
+        filter(current_status!="Duplicate", 
+               current_status!="Withdrawn",
+               current_status=="Issued") %>% 
+        summarize(count=n())
+)
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
