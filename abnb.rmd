@@ -1,12 +1,12 @@
 ---
 title: "Airbnb"
-author: "chadnoliver"
+author: "chadNoliver"
 date: "2019.07.29"
 ---
 
 This file will be used for exploratory data analysis of New Orleans Airbnb data.
 
-First we will import the data from the airbnb open data api:
+First we will import the data from the airbnb open data api and from scraped data:
 
 ```{r, Data import}
 library(RSocrata)
@@ -27,31 +27,93 @@ kable(df %>%
         summarize(count=n())
 )
 
+View(df %>% filter(license_type=="Choose a License Type"))
 
+View(df %>% 
+       filter(current_status=="Issued",expired=="No") %>%
+       group_by(as.double(bedroom_limit),as.double(guest_occupancy_limit)) %>% 
+       summarize(count=n())
+)
 
-
-
-
-
-
+View(df %>% 
+       group_by(license_holder_name) %>% 
+       summarize(count=n())
+)
 
 ```
 
 
+The STR Zoning key is posted at: https://www.nola.gov/short-term-rentals/str-zoning-restrictions/where-are-strs-allowed/
 
+In order to merge it with the assessors data, we need to convert it to a df with the following code:
 
+```{r}
 
+df <- rbind(
+c("BIP", 	"P", NA , NA), 	  	 
+c("C-1", 	"P", 	"P", 	"P"),
+c("C-2", 	"P", 	"P", 	"P"),
+c("C-3", 	"P", 	"P", 	"P"),
+c("CBD-1", 	"P", 	"*", 	"P*"),
+c("CBD-2", 	"P", 	"*", 	"P*"),
+c("CBD-3", 	"P", 	"*", 	"P*"),
+c("CBD-4", 	"P", 	"*", 	"P*"),
+c("CBD-5", 	"P", 	"*", 	"P*"),
+c("CBD-6", 	"P", 	"*", 	"P*"),
+c("CBD-7", 	"P", 	"*", 	"P*"),
+c("EC", 	"P", 	"P", 	"P"),
+c("HI", 	"P", NA, NA),
+c("HMC-1", 	"P", 	"*", 	"P*"),
+c("HMC-2", 	"P", 	"*", 	"P*"),
+c("HM-MU", 	"P", 	"*", 	"P*"),
+c("HMR-1", 	"P", 	"*", NA), 	 
+c("HMR-2", 	"P", 	"*", NA), 	 
+c("HMR-3", 	"P", 	"*", NA), 	 
+c("HU-B1", 	"P", 	"*", 	"P*"),
+c("HU-B1A", 	"P", 	"*", 	"C*"),
+c("HU-MU", 	"P", 	"*", 	"P*"),
+c("HU-RD1", 	"P", 	"*", NA), 	 
+c("HU-RD2", 	"P", 	"*", NA), 	 
+c("HU-RM1", 	"P", 	"*", NA), 	 
+c("HU-RM2", 	"P", 	"*", NA), 	 
+c("HU-RS", 	"P", 	"*", NA), 	 
+c("LI", 	"P", 	"P", NA), 	 
+c("LS", 	"P", 	"P", 	"P"),
+c("MC", 	"P", 	"P", 	"P"),
+c("MI", 	"P", NA, NA), 	  	 
+c("M-MU", 	"P", 	 NA, 	"P"),
+c("MS", 	"P", NA, NA), 	  	 
+c("MU-1", 	"P", 	"*", 	"P*"),
+c("MU-2", 	"P", 	"*", 	"P*"),
+c("R-RE", 	"P", NA, NA), 	  	 
+c("S-B1", 	"P", NA, "P"),
+c("S-B2", 	"P", NA,	"P"),
+c("S-LB1", 	"P", 	"P", 	"P"),
+c("S-LB2", 	"P", 	"P", 	"P"),
+c("S-LC", 	"P", 	"P", 	"P"),
+c("S-LM", 	"P", 	"P", 	"P"),
+c("S-LP", 	"P", NA, NA), 	  	 
+c("S-LRD1", 	"P", 	"P", NA), 	 
+c("S-LRD2", 	"P", 	"P", NA), 	 
+c("S-LRM1", 	"P", 	"P", NA), 	 
+c("S-LRM2", 	"P", 	"P", NA), 	 
+c("S-LRS1", 	"P", 	"P", NA), 	 
+c("S-LRS2", 	"P", 	"P", NA), 	 
+c("S-LRS3", 	"P", 	"P", NA), 	 
+c("S-RD", 	"P", 	"P", NA), 	 
+c("S-RM1", 	"P", 	"P", NA), 	 
+c("S-RM2", 	"P", 	"P", NA), 	 
+c("S-RS", 	"P", 	"P", NA), 	 
+c("VCC-1", NA, NA, NA), 	  	  	 
+c("VCC-2", NA, NA, NA), 	  	  	 
+c("VCE", NA, NA, "P*"),
+c("VCE-1", NA, NA, NA), 	  	  	 
+c("VCP", NA, NA, NA), 	  	  	 
+c("VCR-1", NA, NA, NA), 	  	  	 
+c("VCR-2", NA, NA, NA), 	  	  	 
+c("VCS", NA, NA, NA), 	  	  	 
+c("VCS-1", NA, NA, NA)
+)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+colnames(df) <- c("Zoning District", "Accessory STR","Temporary STR", "Commercial STR")
+```
