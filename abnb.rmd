@@ -4,52 +4,64 @@ author: "chadNoliver"
 date: "2019.07.29"
 ---
 
+
 This file will be used for exploratory data analysis of New Orleans Airbnb data.
 
-First we will import the data from the airbnb open data api and from scraped data:
 
-```{r, Data import}
+```{r, load dependencies, warning=FALSE, comment=FALSE, message=FALSE, cache=FALSE}
 library(RSocrata)
 library(knitr)
 library(magrittr)
 library(dplyr)
-df <- read.socrata(
+```
+
+First we will import the data from the following 3 sources:
+  
+  1) Open Data STR Licenses - ```open.license```
+  2) Inside Airbnb - ```inside.airbnb```
+  3) Assessor's Office - ```assessor```
+
+```{r, load data, warning=FALSE, comment=FALSE, message=FALSE, cache=FALSE}
+
+#1. Open Data STR Licenses
+
+open.license <- read.socrata(
   "https://data.nola.gov/resource/en36-xvxg.json"
 )
-str(df)
-View(df)
 
-kable(df %>% 
+kable(open.license %>% 
         group_by(license_type, current_status) %>% 
-        filter(current_status!="Duplicate", 
-               current_status!="Withdrawn",
-               current_status=="Issued") %>% 
+        filter(current_status=="Issued") %>% 
         summarize(count=n())
 )
 
-View(df %>% filter(license_type=="Choose a License Type"))
+#2. Inside Airbnb
 
-View(df %>% 
-       filter(current_status=="Issued",expired=="No") %>%
-       group_by(as.double(bedroom_limit),as.double(guest_occupancy_limit)) %>% 
-       summarize(count=n())
-)
+inside.airbnb <- read.csv("data/listings.csv")
 
-View(df %>% 
-       group_by(license_holder_name) %>% 
-       summarize(count=n())
-)
-
+kable(head(inside.airbnb))
 ```
 
 
-The STR Zoning key is posted at: https://www.nola.gov/short-term-rentals/str-zoning-restrictions/where-are-strs-allowed/
+Next we will join the ```open.license``` table with the ```inside.airbnb``` table to identify which ```inside.airbnb$id``` have ```inside.airbnb$license``` that match with ```open.license$license_number```
 
-In order to merge it with the assessors data, we need to convert it to a df with the following code:
+Steps will include:
+  1) Clean ```inside.airbnb``` data to only inlude appropriate license #'s
 
-```{r}
+```{r, warning=FALSE, comment=FALSE, message=FALSE, cache=FALSE}
+kable(inside.airbnb %>% 
+  group_by(license) %>%
+  summarize(count=n()) %>% 
+  arrange(desc(count)) %>% 
+    filter(count>1)
+)
 
-df <- rbind(
+```
+Next we will hardocde the str ```zoning.key``` from  https://www.nola.gov/short-term-rentals/str-zoning-restrictions/where-are-strs-allowed/ (as represented 2019.08.01)
+
+
+```{r, warning=FALSE, comment=FALSE, message=FALSE, cache=FALSE}
+zoning.key <- rbind(
 c("BIP", 	"P", NA , NA), 	  	 
 c("C-1", 	"P", 	"P", 	"P"),
 c("C-2", 	"P", 	"P", 	"P"),
@@ -115,5 +127,8 @@ c("VCS", NA, NA, NA),
 c("VCS-1", NA, NA, NA)
 )
 
-colnames(df) <- c("Zoning District", "Accessory STR","Temporary STR", "Commercial STR")
+colnames(zoning.key) <- c("Zoning District", "Accessory STR","Temporary STR", "Commercial STR")
+
+kable(zoning.key)
+
 ```
