@@ -49,12 +49,24 @@ Steps will include:
   1) Clean ```inside.airbnb``` data to only inlude appropriate license #'s
 
 ```{r, warning=FALSE, comment=FALSE, message=FALSE, cache=FALSE}
+
+#1. View Licesnses
+
 kable(inside.airbnb %>% 
   group_by(license) %>%
   summarize(count=n()) %>% 
   arrange(desc(count)) %>% 
     filter(count>1)
 )
+
+#2. Find only the actual license numbers
+
+pattern <- "^\\d{2}STR-\\d{5}"
+library(stringr)
+inside.airbnb <- inside.airbnb %>% 
+  mutate(license.match = str_match(inside.airbnb$license, pattern))
+
+View(inside.airbnb)
 
 ```
 Next we will hardocde the str ```zoning.key``` from  https://www.nola.gov/short-term-rentals/str-zoning-restrictions/where-are-strs-allowed/ (as represented 2019.08.01)
