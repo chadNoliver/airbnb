@@ -6,6 +6,7 @@ date: "2019.07.29"
 
 
 This file will be used for exploratory data analysis of New Orleans Airbnb data.
+The first analysis will examine the rate at which STR applications have been filed.
 
 
 ```{r, load dependencies, warning=FALSE, comment=FALSE, message=FALSE}
@@ -21,13 +22,13 @@ First we will import the data from the following 3 sources:
   2) Inside Airbnb - ```inside.airbnb```
   3) Assessor's Office - ```assessor```
 
-```{r, load data, warning=FALSE, comment=FALSE, message=FALSE}
+```{r, load data, comment=FALSE, message=FALSE}
 
 #1. Open Data STR Licenses
 
-#open.license <- read.socrata(
-#  "https://data.nola.gov/resource/en36-xvxg.json"
-#)
+open.license <- read.socrata(
+  "https://data.nola.gov/resource/en36-xvxg.json"
+)
 
 kable(open.license %>% 
         group_by(license_type, current_status) %>% 
@@ -35,14 +36,16 @@ kable(open.license %>%
         summarize(count=n())
 )
 
+
+ 
 #2. Inside Airbnb
 
 inside.airbnb <- read.csv("data/listings.csv")
 
 kable(head(inside.airbnb %>% 
-             select(-c(summary, space, description, host_about, neighborhood_overview, transit:house_rules))
+             select(-c(summary, space, description, notes, host_about, neighborhood_overview, transit:house_rules))
            )
-      )
+      ) 
 ```
 
 
@@ -52,11 +55,12 @@ Steps will include:
   1) Clean ```inside.airbnb``` data to only inlude appropriate license #'s
    - matches should be ```\\d{2}STR-\\d{5}```
 
-```{r, warning=FALSE, comment=FALSE, message=FALSE}
+```{r, comment=FALSE, message=FALSE}
 
 #1. Find only the actual license numbers
 
-pattern <- "\\d{2}STR\\d{5}|\\d{2}-STR\\d{5}|\\d{2}STR-\\d{5}|\\d{2}-STR-\\d{5}"
+#pattern <- "\\d{2}STR\\d{5}|\\d{2}-STR\\d{5}|\\d{2}STR-\\d{5}|\\d{2}-STR-\\d{5}"
+pattern <- "\\d{2}STR-\\d{5}"
 library(stringr)
 inside.airbnb <- inside.airbnb %>%
   mutate(license.alt = str_to_upper(str_remove_all(license,"[[:space:]]"))) %>%
@@ -64,20 +68,51 @@ inside.airbnb <- inside.airbnb %>%
            
 kable(head(inside.airbnb %>% 
        select(license, license.alt, license.match)
-))
+)) 
+
 ```
 
  2) Clean ```open.license```
 
-```{r, warning=FALSE, comment=FALSE, message=FALSE}
-kable(head(open.license))
+```{r, comment=FALSE, message=FALSE}
+
+open.inside <- inside.airbnb %>% 
+  filter (license.match!="NA") %>% 
+  left_join(filter(open.license, license_number!="NA"), by=c("license.match" = "license_number"))
+
+kable(head(open.inside %>% 
+             select(-c(space, description, notes, host_about, amenities, summary, neighborhood_overview, transit:house_rules)
+                    )
+           )
+      )
+
+kable(head(open.inside %>% 
+  group_by(host_id) %>% 
+  summarize(count=n()) %>% 
+  arrange(desc(count))
+  )
+)
+kable(head(open.inside %>% 
+  group_by(host_name) %>% 
+  summarize(count=n()) %>% 
+  arrange(desc(count))
+  )
+)
+
+
+
+kable(head(open.license %>% 
+        group_by(license_number) %>%  
+        summarize(count = n()) %>% 
+        arrange(desc(count)))
+)
 ```
  
- 
-Next we will hardocde the str ```zoning.key``` from  https://www.nola.gov/short-term-rentals/str-zoning-restrictions/where-are-strs-allowed/ (as represented 2019.08.01)
+
+Next we will hardcode the str ```zoning.key``` from  https://www.nola.gov/short-term-rentals/str-zoning-restrictions/where-are-strs-allowed/ (as represented 2019.08.01)
 
 
-```{r, warning=FALSE, comment=FALSE, message=FALSE}
+```{r, comment=FALSE, message=FALSE}
 
 zoning.key <- rbind(
 c("BIP", 	"P", NA , NA), 	  	 
@@ -150,3 +185,19 @@ colnames(zoning.key) <- c("Zoning District", "Accessory STR","Temporary STR", "C
 kable(head(zoning.key))
 
 ```
+
+
+
+Council meeting notes:
+ - Licenses are only valid for 1 yr - not transferrable
+ - Three types:
+ -- Small
+ -- Large has up to 3 entire dwelling unnits
+ -- Commercial - up to 5 bedrooms, not 10 occupants
+ - 10A Amendmnet
+ - 10B Amendment
+ - Operator permits
+ - Look into VC-1 Ban (likely VCR-1)
+ - Look into HUB-1 Zoning
+- CBD-5
+ 
