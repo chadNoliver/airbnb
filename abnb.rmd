@@ -184,9 +184,6 @@ colnames(zoning.key) <- c("Zoning District", "Accessory STR","Temporary STR", "C
 
 kable(head(zoning.key))
 
-zoning.key.kgp <- rbind(c("OS-N",NA,NA,NA,NA),
-                        c("OS-G",NA,NA,NA,NA)
-                          )
 
 zoning.key.kgp <- rbind(
   #Zoning Type | Zoning Code | Zoning Code Description | Bed and Breakfast - Accessory | Bed and Breakfast - Primary | Large | Small | Hostel | Hotel/Motel | Commercial
@@ -227,78 +224,96 @@ zoning.key.kgp <- rbind(
                         c("Historic Urban Neighborhoods Districts","HU-B1", "Neighborhood Business District", "P", "P", "P", "P", "N","N","N"),
                         c("Historic Urban Neighborhoods Districts","HU-MU", "Neighborhood Mixed-Use District", "P", "P", "P", "P", "N","N","P"),
 # Suburban Neighborhoods
-                        c("Suburban Neighborhoods", "S-RS", "Single-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-RD", "Two-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-RM1", "Multi-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-RM2", "Multi-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRS1", "Lakeview Single-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRS2", "Lake Vista and Lake Shore Single-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRS3", "Lakewood and Country Club Gardens Single-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRD1", "Lake Vista Two-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRD2", "Lakewood/Parkview Two-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRM1", "Lake Area Low-Rise Multi-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LRM2", "Lake Area High-Rise Multi-Family Residential District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-B1", "Suburban Business District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-B2", "Pedestrian-Oriented Corridor Business District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LB1", "Lake Area Neighborhood Business District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LB2", "Lake Area Neighborhood Business District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LC", "Lake Area General Commercial District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LP", "Lake Area Neighborhood Park District", "", "", "", "","","",""),
-                        c("Suburban Neighborhoods", "S-LM", "Lake Area Marina District", "", "", "", "","","",""),
+                        c("Suburban Neighborhoods", "S-RS", "Single-Family Residential District", "P", "N", "N", "P","N","N","N"),
+                        c("Suburban Neighborhoods", "S-RD", "Two-Family Residential District", "P", "N", "N", "P","N","N","N"),
+                        c("Suburban Neighborhoods", "S-RM1", "Multi-Family Residential District", "P", "N", "N", "P","N","N","N"),
+                        c("Suburban Neighborhoods", "S-RM2", "Multi-Family Residential District", "P", "N", "N", "P","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRS1", "Lakeview Single-Family Residential District", "P", "N", "N", "P","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRS2", "Lake Vista and Lake Shore Single-Family Residential District", "N", "N", "N", "N","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRS3", "Lakewood and Country Club Gardens Single-Family Residential District", "N", "N", "N", "N","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRD1", "Lake Vista Two-Family Residential District", "N", "N", "N", "N","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRD2", "Lakewood/Parkview Two-Family Residential District", "C", "N", "N", "C","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRM1", "Lake Area Low-Rise Multi-Family Residential District", "C", "N", "N", "C","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LRM2", "Lake Area High-Rise Multi-Family Residential District", "C", "N", "N", "C","N","N","N"),
+                        c("Suburban Neighborhoods", "S-B1", "Suburban Business District", "N", "N", "N", "N","N","N","N"),
+                        c("Suburban Neighborhoods", "S-B2", "Pedestrian-Oriented Corridor Business District", "N", "N", "N", "N","N","N","P"),
+                        c("Suburban Neighborhoods", "S-LB1", "Lake Area Neighborhood Business District", "P", "P", "P", "P","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LB2", "Lake Area Neighborhood Business District", "P", "P", "P", "P","N","N","P"),
+                        c("Suburban Neighborhoods", "S-LC", "Lake Area General Commercial District", "P", "P", "P", "P","N","C","P"),
+                        c("Suburban Neighborhoods", "S-LP", "Lake Area Neighborhood Park District", "N", "N", "N", "N","N","N","N"),
+                        c("Suburban Neighborhoods", "S-LM", "Lake Area Marina District", "N", "N", "N", "N","N","C","P"),
+                        c("Suburban Neighborhoods", "S-MU", "Suburban Neighborhood Mixed-Use District", "C", "N", "N", "P","N","N","N"),
  #Commercial Center and Institutional Campus Districts
 
-                        c("Commercial Center and Institutional Campus Districts", "C-1", "General Commercial District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "C-2", "Auto-Oriented Commercial District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "C-3", "Heavy Commercial District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "MU-1", "Medium Intensity Mixed-Use District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "MU-2", "High Intensity Mixed-Use District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "EC", "Educational Campus District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "MC", "Medical Campus District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "MS", "Medical Service District", "", "", "", "","","",""),
-                        c("Commercial Center and Institutional Campus Districts", "LS", "Life Science Mixed-Use District", "", "", "", "","","",""),
+                        c("Commercial Center and Institutional Campus Districts", "C-1", "General Commercial District", "N", "N", "N", "N","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "C-2", "Auto-Oriented Commercial District", "N", "N", "N", "N","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "C-3", "Heavy Commercial District", "N", "N", "N", "N","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "MU-1", "Medium Intensity Mixed-Use District", "P", "P", "P", "P","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "MU-2", "High Intensity Mixed-Use District", "P", "P", "P", "P","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "EC", "Educational Campus District", "P", "N", "N", "N","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "MC", "Medical Campus District", "N", "N", "N", "N","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "MS", "Medical Service District", "N", "N", "N", "N","N","P","P"),
+                        c("Commercial Center and Institutional Campus Districts", "LS", "Life Science Mixed-Use District", "N", "N", "N", "N","N","P","P"),
 #Centers for Industry
-                        c("Centers for Industry", "LI", "Light Industrial District", "", "", "", "","","",""),
-                        c("Centers for Industry", "HI", "Heavy Industrial District", "", "", "", "","","",""),
-                        c("Centers for Industry", "MI", "Maritime Industrial District", "", "", "", "","","",""),
-                        c("Centers for Industry", "BIP", "Business-Industrial Park District", "", "", "", "","","",""),
+                        c("Centers for Industry", "LI", "Light Industrial District", "N", "N", "N", "N","N","P","P"),
+                        c("Centers for Industry", "HI", "Heavy Industrial District", "N", "N", "N", "N","N","C","C"),
+                        c("Centers for Industry", "MI", "Maritime Industrial District", "N", "N", "N", "N","N","P","C"),
+                        c("Centers for Industry", "BIP", "Business-Industrial Park District", "N", "N", "N", "N","N","P","P"),
 
 #Central Business District
 
-                        c("Central Business District", "CBD-1", "Core Central Business District", "", "", "", "","","",""),
-                        c("Central Business District", "CBD-2", "Historic Commercial and Mixed-Use District", "", "", "", "","","",""),
-                        c("Central Business District", "CBD-3", "Cultural Arts District", "", "", "", "","","",""),
-                        c("Central Business District", "CBD-4", "Exposition District", "", "", "", "","","",""),
-                        c("Central Business District", "CBD-5", "Urban Core Neighborhood Lower Intensity Mixed-Use District", "", "", "", "","","",""),
-                        c("Central Business District", "CBD-6", "Urban Core Neighborhood Mixed-Use District", "", "", "", "","","",""),
-                        c("Central Business District", "CBD-7", "Bio-Science District", "", "", "", "","","",""),
+                        c("Central Business District", "CBD-1", "Core Central Business District", "P", "P", "P", "P","N","P","P"),
+                        c("Central Business District", "CBD-2", "Historic Commercial and Mixed-Use District", "P", "P", "P", "P","N","P","P"),
+                        c("Central Business District", "CBD-3", "Cultural Arts District", "P", "P", "P", "P","N","P","P"),
+                        c("Central Business District", "CBD-4", "Exposition District", "N", "N", "N", "N","N","P","P"),
+                        c("Central Business District", "CBD-5", "Urban Core Neighborhood Lower Intensity Mixed-Use District", "P", "P", "P", "P","N","C","C"),
+                        c("Central Business District", "CBD-6", "Urban Core Neighborhood Mixed-Use District", "P", "P", "P", "P","N","P","P"),
+                        c("Central Business District", "CBD-7", "Bio-Science District", "P", "P", "P", "P","N","P","P")
  
  #Overlay Zoning Districts
-                        c("Overlay Zoning Districts", "SC", "Suburban Corridor Use Restriction Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "ENORC", "Eastern New Orleans Renaissance Corridor Use Restriction Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "HUC", "Historic Urban Corridor Use Restriction Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "SC", "Suburban Corridor Use Restriction Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "ENORC", "Eastern New Orleans Renaissance Corridor Use Restriction Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "HUC", "Historic Urban Corridor Use Restriction Overlay District", "", "", "", "","","",""),
                         #c("Overlay Zoning Districts", "???", "Lower St. Charles Avenue Use Restriction Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "RDO-1", "Residential Diversity Overlay District (Marigny/Bywater)", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "RDO-2", "Residential Diversity Overlay District (Tremé/Seventh Ward)", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "AC-1", "Arts and Culture Diversity Overlay District (Frenchmen, St. Bernard, Broad)", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "AC-2", "Arts and Culture Diversity Overlay District (Freret, Newton, Teche)", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "AC-3", "Arts and Culture Diversity Overlay District (St. Claude)", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "AC-4", "Arts and Culture Diversity Overlay District (Tremé)", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "RIV", "Riverfront Design Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "CPC", "Character Preservation Corridor Design Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "EC", "Enhancement Corridor Design Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "CT", "Corridor Transformation Design Overlay District", "", "", "", "","","",""),
-                        c("Overlay Zoning Districts", "GC", "Greenway Corridor Design Overlay District", "", "", "", "","","","")
+                        #c("Overlay Zoning Districts", "RDO-1", "Residential Diversity Overlay District (Marigny/Bywater)", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "RDO-2", "Residential Diversity Overlay District (Tremé/Seventh Ward)", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "AC-1", "Arts and Culture Diversity Overlay District (Frenchmen, St. Bernard, Broad)", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "AC-2", "Arts and Culture Diversity Overlay District (Freret, Newton, Teche)", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "AC-3", "Arts and Culture Diversity Overlay District (St. Claude)", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "AC-4", "Arts and Culture Diversity Overlay District (Tremé)", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "RIV", "Riverfront Design Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "CPC", "Character Preservation Corridor Design Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "EC", "Enhancement Corridor Design Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "CT", "Corridor Transformation Design Overlay District", "", "", "", "","","",""),
+                        #c("Overlay Zoning Districts", "GC", "Greenway Corridor Design Overlay District", "", "", "", "","","","")
 )
 
  
  
-colnames(zoning.key.kgp <- c("Zoning Group", "Zoning Code", "Zoning Code Description","Bed and Breakfast - Accessory","Bed and Breakfast - Primary", "Large", "Small", "Hostel", "Hotel/Motel","Commercial")
-         )
-print(zoning.key.kgp)
+colnames(zoning.key.kgp) <- c("Zoning Group", "Zoning Code", "Zoning Code Description","Bed and Breakfast - Accessory","Bed and Breakfast - Primary", "Large", "Small", "Hostel", "Hotel/Motel","Commercial")
+         
+kable(zoning.key.kgp)
 
 ```
+ 
+
+Code below used for importing CZO effective until 2019.12.01
+```{r comment=FALSE, message=FALSE}
+
+library(readxl)
+
+import.czo <- function(c){
+  c <- read_excel(path="data/CZO Key.xlsx",sheet=shQuote(c))
+  stack.c <- c %>%
+    select(-`USE STANDARDS`) %>% 
+    t()
+kable(head(stack.c))
+}
 
 
+import.czo(table07.1)
+print(stack.table07.1)
+```
 
 Council meeting notes:
  - Licenses are only valid for 1 yr - not transferrable
