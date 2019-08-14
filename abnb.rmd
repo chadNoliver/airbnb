@@ -303,16 +303,30 @@ Code below used for importing CZO effective until 2019.12.01
 library(readxl)
 
 import.czo <- function(c){
-  c <- read_excel(path="data/CZO Key.xlsx",sheet=shQuote(c))
-  stack.c <- c %>%
+  df <- read_excel(path="data/CZO Key.xlsx",sheet=c,col_names=TRUE) %>% 
     select(-`USE STANDARDS`) %>% 
     t()
-kable(head(stack.c))
+  colnames(df) = df[1, ]
+  df <- as_tibble(df[-1, ])
 }
 
+df1 <- import.czo("table07.1")
+df2 <- import.czo("table08.1")
+df3 <- import.czo("table09.1")
+df4 <- import.czo("table10.1")
+df5 <- import.czo("table11.1")
+df6 <- import.czo("table12.1")
+df7 <- import.czo("table13.1.a")
+df8 <- import.czo("table13.1.b")
+df9 <- import.czo("table14.1.a")
+df10 <- import.czo("table14.1.b")
+df11 <- import.czo("table15.1")
+df12 <- import.czo("table16.1")
+df13 <- import.czo("table17.1")
 
-import.czo(table07.1)
-print(stack.table07.1)
+df <-  bind_rows(df1,df2,df3,df4,df5,df6,df7,df8,df9,df10,df11,df12,df13)
+View(df)
+?t()
 ```
 
 Council meeting notes:
